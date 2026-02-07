@@ -41,7 +41,7 @@ export function validateMove(
         return { valid: false, error: MoveError.OUT_OF_BOUNDS };
     }
 
-    // First two turns: can place on any neutral cell
+    // First two turns: can only place on neutral cells (each player picks their starting cell)
     if (state.turn < 2) {
         if (cell.color !== 'N') {
             return { valid: false, error: MoveError.INVALID_CELL };
@@ -49,17 +49,16 @@ export function validateMove(
         return { valid: true };
     }
 
-    // After first turns: can only place on own cells
-    if (cell.color === 'N') {
-        return { valid: false, error: MoveError.NEUTRAL_AFTER_FIRST };
-    }
-
-    if (cell.color !== move.player) {
+    // After first turns: can place on neutral OR own cells, but NOT opponent cells
+    // This allows clicking cells that were reset to neutral after explosions
+    const opponent: Player = move.player === 'B' ? 'R' : 'B';
+    if (cell.color === opponent) {
         return { valid: false, error: MoveError.INVALID_CELL };
     }
 
     return { valid: true };
 }
+
 
 /**
  * Checks if the game has a winner
@@ -96,18 +95,19 @@ export function hasValidMoves(
     turn: number
 ): boolean {
     const size = grid.length;
+    const opponent: Player = player === 'B' ? 'R' : 'B';
 
     for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
             const cell = grid[r][c];
 
-            // First two turns: any neutral cell is valid
+            // First two turns: only neutral cells are valid
             if (turn < 2 && cell.color === 'N') {
                 return true;
             }
 
-            // After first turns: any owned cell is valid
-            if (turn >= 2 && cell.color === player) {
+            // After first turns: neutral OR owned cells are valid (not opponent)
+            if (turn >= 2 && cell.color !== opponent) {
                 return true;
             }
         }
@@ -126,18 +126,19 @@ export function getValidMoves(
 ): { row: number; col: number }[] {
     const moves: { row: number; col: number }[] = [];
     const size = grid.length;
+    const opponent: Player = player === 'B' ? 'R' : 'B';
 
     for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
             const cell = grid[r][c];
 
-            // First two turns: any neutral cell is valid
+            // First two turns: only neutral cells are valid
             if (turn < 2 && cell.color === 'N') {
                 moves.push({ row: r, col: c });
             }
 
-            // After first turns: any owned cell is valid
-            if (turn >= 2 && cell.color === player) {
+            // After first turns: neutral OR owned cells are valid (not opponent)
+            if (turn >= 2 && cell.color !== opponent) {
                 moves.push({ row: r, col: c });
             }
         }
@@ -145,6 +146,7 @@ export function getValidMoves(
 
     return moves;
 }
+
 
 /**
  * Gets the next player

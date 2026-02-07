@@ -56,17 +56,18 @@ describe('Game Rules', () => {
             expect(result.error).toBe(MoveError.INVALID_CELL);
         });
 
-        it('should reject move on neutral cell after first turns', () => {
+        it('should allow move on neutral cell after first turns (e.g., cells reset after explosion)', () => {
             const state = {
                 ...createGameState(),
                 turn: 5,
                 currentPlayer: 'B' as const,
+                status: 'playing' as const,
             };
 
             const result = validateMove(state, { row: 0, col: 0, player: 'B' });
 
-            expect(result.valid).toBe(false);
-            expect(result.error).toBe(MoveError.NEUTRAL_AFTER_FIRST);
+            // Neutral cells are valid after first turns - allows clicking cells that exploded
+            expect(result.valid).toBe(true);
         });
 
         it('should allow move on own cell after first turns', () => {
@@ -134,9 +135,21 @@ describe('Game Rules', () => {
             expect(hasValidMoves(grid, 'B', 5)).toBe(true);
         });
 
-        it('should return false if player has no cells after first turns', () => {
+        it('should return true if neutral cells exist (player can expand)', () => {
+            // When there are neutral cells, player can still place on them
             const grid = createGrid(4);
-            grid[1][1] = { value: 2, color: 'R' };
+            grid[1][1] = { value: 2, color: 'R' }; // One opponent cell
+            // The rest are neutral, so B can still move
+            expect(hasValidMoves(grid, 'B', 5)).toBe(true);
+        });
+
+        it('should return false if only opponent cells exist', () => {
+            // Create grid where ALL cells are opponent cells
+            const grid = createGrid(2); // 2x2 grid
+            grid[0][0] = { value: 1, color: 'R' };
+            grid[0][1] = { value: 1, color: 'R' };
+            grid[1][0] = { value: 1, color: 'R' };
+            grid[1][1] = { value: 1, color: 'R' };
             expect(hasValidMoves(grid, 'B', 5)).toBe(false);
         });
     });
@@ -148,17 +161,21 @@ describe('Game Rules', () => {
             expect(moves.length).toBe(9);
         });
 
-        it('should return only own cells after first turns', () => {
-            const grid = createGrid(4);
-            grid[1][1] = { value: 2, color: 'B' };
-            grid[2][2] = { value: 1, color: 'B' };
-            grid[0][0] = { value: 3, color: 'R' };
+        it('should return own cells AND neutral cells after first turns', () => {
+            const grid = createGrid(4); // 4x4 = 16 cells
+            grid[1][1] = { value: 2, color: 'B' }; // B owns 1 cell
+            grid[2][2] = { value: 1, color: 'B' }; // B owns 1 cell
+            grid[0][0] = { value: 3, color: 'R' }; // R owns 1 cell
+            // Remaining 13 cells are neutral
 
             const moves = getValidMoves(grid, 'B', 5);
 
-            expect(moves.length).toBe(2);
+            // B can move on: 2 own cells + 13 neutral cells = 15
+            expect(moves.length).toBe(15);
             expect(moves).toContainEqual({ row: 1, col: 1 });
             expect(moves).toContainEqual({ row: 2, col: 2 });
+            // Should NOT contain opponent cell
+            expect(moves).not.toContainEqual({ row: 0, col: 0 });
         });
     });
 
