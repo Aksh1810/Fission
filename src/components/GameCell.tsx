@@ -5,7 +5,7 @@ import { Cell as CellType, Direction, Player } from '@/core/types';
 import { CellDots } from './CellDots';
 import { BurstEffect } from './BurstEffect';
 import { ExplosionRing } from './ExplosionRing';
-import { useState, useEffect } from 'react';
+
 
 interface BurstDot {
     id: number;
@@ -35,18 +35,9 @@ export function GameCell({
     burstDots,
     onBurstComplete,
 }: CellProps) {
-    const [isExploding, setIsExploding] = useState(false);
-    const [prevValue, setPrevValue] = useState(cell.value);
+    // Explosion is happening when there are burst dots from this cell
+    const isExploding = burstDots.length > 0;
 
-    // Detect when cell value drops (explosion happened)
-    useEffect(() => {
-        if (prevValue >= 4 && cell.value < prevValue) {
-            setIsExploding(true);
-            const timer = setTimeout(() => setIsExploding(false), 400);
-            return () => clearTimeout(timer);
-        }
-        setPrevValue(cell.value);
-    }, [cell.value, prevValue]);
 
     const colors = {
         R: {
