@@ -114,7 +114,7 @@ export function GameCell({
 
                 {/* Dot pattern with smooth transitions */}
                 <motion.div
-                    className="relative z-10"
+                    className="relative z-10 w-full h-full"
                     animate={{ scale: isExploding ? 0 : 1 }}
                     transition={{ duration: 0.15 }}
                 >

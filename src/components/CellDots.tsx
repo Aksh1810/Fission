@@ -13,7 +13,7 @@ interface CellDotsProps {
 export function CellDots({ value }: CellDotsProps) {
     if (value === 0) return null;
 
-    const dotClass = "w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 lg:w-4 lg:h-4 rounded-full bg-gray-800/80";
+    const dotClass = "w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 lg:w-4 lg:h-4 rounded-full bg-slate-900 shadow-[0_0_4px_rgba(0,0,0,0.8)]";
 
     const dotVariants = {
         initial: { scale: 0 },
