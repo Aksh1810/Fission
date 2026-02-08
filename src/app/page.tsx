@@ -23,7 +23,7 @@ export default function Home() {
                            text-white font-semibold text-lg rounded-xl
                            transition-all duration-200 transform hover:scale-105
                            shadow-lg shadow-blue-500/25">
-            🤖 Play vs AI
+            Play vs AI
           </button>
         </Link>
 
@@ -33,7 +33,7 @@ export default function Home() {
                            text-white font-semibold text-lg rounded-xl
                            transition-all duration-200 transform hover:scale-105
                            shadow-lg shadow-purple-500/25">
-            👥 Two Players
+          Two Players
           </button>
         </Link>
       </div>
