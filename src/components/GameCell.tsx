@@ -39,17 +39,21 @@ export function GameCell({
     const isExploding = burstDots.length > 0;
 
 
+    // Enhanced color palette with richer, more vibrant colors
     const colors = {
         R: {
-            bg: 'rgb(239, 68, 68)',
-            glow: 'rgba(239, 68, 68, 0.4)',
+            bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%)',
+            solid: '#ef4444',
+            glow: 'rgba(239, 68, 68, 0.5)',
         },
         B: {
-            bg: 'rgb(59, 130, 246)',
-            glow: 'rgba(59, 130, 246, 0.4)',
+            bg: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
+            solid: '#3b82f6',
+            glow: 'rgba(59, 130, 246, 0.5)',
         },
         N: {
-            bg: 'rgb(55, 65, 81)',
+            bg: 'linear-gradient(135deg, #4b5563 0%, #374151 50%, #1f2937 100%)',
+            solid: '#374151',
             glow: 'transparent',
         },
     };
@@ -83,8 +87,10 @@ export function GameCell({
                     className="absolute inset-1 rounded-full"
                     initial={false}
                     animate={{
-                        backgroundColor: colorSet.bg,
                         boxShadow: pulseGlow,
+                    }}
+                    style={{
+                        background: colorSet.bg,
                     }}
                     transition={{ duration: 0.25, ease: 'easeOut' }}
                 />

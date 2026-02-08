@@ -15,6 +15,10 @@ export default function SinglePlayer() {
 
     const { initAudio, playClick, playExplosion, toggleSound } = useAudio();
 
+    // AI goes first in Medium/Hard modes for balanced gameplay
+    // Easy: Player is Blue (goes first), Medium/Hard: Player is Red (AI goes first)
+    const playerColor = difficulty === 'easy' ? 'B' : 'R';
+
     const {
         gameState,
         burstDots,
@@ -27,7 +31,7 @@ export default function SinglePlayer() {
     } = useGame({
         mode: 'singleplayer',
         difficulty,
-        playerColor: 'B',
+        playerColor,
     });
 
     // Wrap cell click with audio
@@ -85,7 +89,7 @@ export default function SinglePlayer() {
     }
 
     const isGameOver = gameState.status === 'game_over';
-    const isPlayerWinner = gameState.winner === 'B';
+    const isPlayerWinner = gameState.winner === playerColor;
     const isDisabled = isProcessing || isAiTurn || isGameOver;
 
     return (
