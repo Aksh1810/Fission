@@ -125,13 +125,14 @@ export interface GameConfig {
 export const DEFAULT_CONFIG: GameConfig = {
   gridSize: 6,
   criticalMass: {
-    corner: 3,
-    edge: 3,
-    center: 3,
+    corner: 4,
+    edge: 4,
+    center: 4,
   },
-  firstTurnValue: 1,
+  firstTurnValue: 3,
   maxChainSteps: 1000,
 } as const;
+
 
 
 // Minimax output

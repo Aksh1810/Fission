@@ -41,11 +41,12 @@ describe('Game Engine', () => {
             expect(result.success).toBe(true);
             if (result.success) {
                 expect(result.value.state.grid[2][2].color).toBe('B');
-                expect(result.value.state.grid[2][2].value).toBe(1); // firstTurnValue = 1
+                expect(result.value.state.grid[2][2].value).toBe(3); // Reference: firstTurnValue = 3
                 expect(result.value.state.turn).toBe(1);
                 expect(result.value.state.currentPlayer).toBe('R');
             }
         });
+
 
 
         it('should reject invalid move', () => {
