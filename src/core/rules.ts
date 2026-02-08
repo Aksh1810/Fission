@@ -16,6 +16,11 @@ import { isInBounds, getCell } from './grid';
 
 /**
  * Validates if a move is legal
+ * 
+ * Rules:
+ * - First turn: can click any neutral cell to start
+ * - After first turn: can ONLY click cells you own (cells with your color and atoms)
+ * - Empty cells are NOT clickable unless they received atoms from an explosion
  */
 export function validateMove(
     state: GameState,
@@ -49,15 +54,15 @@ export function validateMove(
         return { valid: true };
     }
 
-    // After first turns: can place on neutral OR own cells, but NOT opponent cells
-    // This allows clicking cells that were reset to neutral after explosions
-    const opponent: Player = move.player === 'B' ? 'R' : 'B';
-    if (cell.color === opponent) {
+    // After first turns: can ONLY click cells you own (your color with atoms)
+    // This restricts players to their initial cell and cells that received atoms from explosions
+    if (cell.color !== move.player) {
         return { valid: false, error: MoveError.INVALID_CELL };
     }
 
     return { valid: true };
 }
+
 
 
 /**
@@ -95,7 +100,6 @@ export function hasValidMoves(
     turn: number
 ): boolean {
     const size = grid.length;
-    const opponent: Player = player === 'B' ? 'R' : 'B';
 
     for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
@@ -106,8 +110,8 @@ export function hasValidMoves(
                 return true;
             }
 
-            // After first turns: neutral OR owned cells are valid (not opponent)
-            if (turn >= 2 && cell.color !== opponent) {
+            // After first turns: ONLY owned cells are valid
+            if (turn >= 2 && cell.color === player) {
                 return true;
             }
         }
@@ -126,7 +130,6 @@ export function getValidMoves(
 ): { row: number; col: number }[] {
     const moves: { row: number; col: number }[] = [];
     const size = grid.length;
-    const opponent: Player = player === 'B' ? 'R' : 'B';
 
     for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
@@ -137,8 +140,8 @@ export function getValidMoves(
                 moves.push({ row: r, col: c });
             }
 
-            // After first turns: neutral OR owned cells are valid (not opponent)
-            if (turn >= 2 && cell.color !== opponent) {
+            // After first turns: ONLY owned cells are valid
+            if (turn >= 2 && cell.color === player) {
                 moves.push({ row: r, col: c });
             }
         }
@@ -146,6 +149,7 @@ export function getValidMoves(
 
     return moves;
 }
+
 
 
 /**

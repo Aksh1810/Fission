@@ -30,7 +30,7 @@ export interface Move extends Position {
 export type Direction = 'up' | 'down' | 'left' | 'right';
 
 // Game status
-export type GameStatus = 
+export type GameStatus =
   | 'setup'
   | 'playing'
   | 'processing'
@@ -38,7 +38,7 @@ export type GameStatus =
   | 'game_over';
 
 // Game mode
-export type GameMode = 
+export type GameMode =
   | 'singleplayer'
   | 'twoplayer'
   | 'multiplayer';
@@ -105,7 +105,7 @@ export enum MoveError {
 }
 
 // Result type for operations that can fail
-export type Result<T, E = Error> = 
+export type Result<T, E = Error> =
   | { readonly success: true; readonly value: T }
   | { readonly success: false; readonly error: E };
 
@@ -125,13 +125,14 @@ export interface GameConfig {
 export const DEFAULT_CONFIG: GameConfig = {
   gridSize: 6,
   criticalMass: {
-    corner: 4,
-    edge: 4,
-    center: 4,
+    corner: 3,
+    edge: 3,
+    center: 3,
   },
-  firstTurnValue: 3,
+  firstTurnValue: 1,
   maxChainSteps: 1000,
 } as const;
+
 
 // Minimax output
 export interface AIMove {

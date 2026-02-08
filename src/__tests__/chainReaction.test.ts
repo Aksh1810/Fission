@@ -10,23 +10,25 @@ describe('Chain Reaction Engine', () => {
 
             const result = processMove(grid, 1, 1, 'B', true, DEFAULT_CONFIG);
 
-            expect(result.grid[1][1].value).toBe(3);
+            // First turn places 1 atom (firstTurnValue = 1)
+            expect(result.grid[1][1].value).toBe(1);
             expect(result.grid[1][1].color).toBe('B');
             expect(result.explosions.length).toBe(0);
         });
 
         it('should increment cell value on subsequent turns', () => {
             const grid = createGrid(4);
-            grid[1][1] = { value: 2, color: 'B' };
+            grid[1][1] = { value: 1, color: 'B' };
 
             const result = processMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);
 
-            expect(result.grid[1][1].value).toBe(3);
+            // Value should increment by 1
+            expect(result.grid[1][1].value).toBe(2);
         });
 
         it('should trigger explosion when reaching critical mass', () => {
             const grid = createGrid(4);
-            grid[1][1] = { value: 3, color: 'B' };
+            grid[1][1] = { value: 2, color: 'B' }; // Critical mass is 3
 
             const result = processMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);
 
@@ -51,8 +53,8 @@ describe('Chain Reaction Engine', () => {
 
         it('should trigger chain reaction when explosion causes neighbor to explode', () => {
             const grid = createGrid(4);
-            grid[1][1] = { value: 3, color: 'B' };
-            grid[1][2] = { value: 3, color: 'B' };
+            grid[1][1] = { value: 2, color: 'B' }; // Will reach 3 and explode
+            grid[1][2] = { value: 2, color: 'B' }; // Will receive 1 and reach 3, then explode
 
             const result = processMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);
 
@@ -62,19 +64,19 @@ describe('Chain Reaction Engine', () => {
 
         it('should convert opponent cells on explosion', () => {
             const grid = createGrid(4);
-            grid[1][1] = { value: 3, color: 'B' };
-            grid[0][1] = { value: 2, color: 'R' };
+            grid[1][1] = { value: 2, color: 'B' }; // Will explode when clicked
+            grid[0][1] = { value: 1, color: 'R' }; // Opponent cell with 1 atom
 
             const result = processMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);
 
-            // Red cell should be converted to Blue
+            // Red cell should be converted to Blue and receive an atom
             expect(result.grid[0][1].color).toBe('B');
-            expect(result.grid[0][1].value).toBe(3);
+            expect(result.grid[0][1].value).toBe(2); // Was 1, now 2
         });
 
         it('should correctly count colors after chain reaction', () => {
             const grid = createGrid(3);
-            grid[1][1] = { value: 3, color: 'B' };
+            grid[1][1] = { value: 2, color: 'B' }; // Will explode
 
             const result = processMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);
 
@@ -85,10 +87,10 @@ describe('Chain Reaction Engine', () => {
         it('should not exceed max chain steps', () => {
             const grid = createGrid(4);
             // Set up a potentially infinite loop scenario
-            grid[0][0] = { value: 3, color: 'B' };
-            grid[0][1] = { value: 3, color: 'B' };
-            grid[1][0] = { value: 3, color: 'B' };
-            grid[1][1] = { value: 3, color: 'B' };
+            grid[0][0] = { value: 2, color: 'B' };
+            grid[0][1] = { value: 2, color: 'B' };
+            grid[1][0] = { value: 2, color: 'B' };
+            grid[1][1] = { value: 2, color: 'B' };
 
             const result = processMove(grid, 0, 0, 'B', false, {
                 ...DEFAULT_CONFIG,
@@ -103,7 +105,7 @@ describe('Chain Reaction Engine', () => {
     describe('simulateMove', () => {
         it('should produce the same final grid as processMove', () => {
             const grid = createGrid(4);
-            grid[1][1] = { value: 3, color: 'B' };
+            grid[1][1] = { value: 2, color: 'B' };
 
             const fullResult = processMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);
             const simResult = simulateMove(grid, 1, 1, 'B', false, DEFAULT_CONFIG);

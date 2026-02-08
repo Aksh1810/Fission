@@ -112,15 +112,16 @@ describe('Grid Utilities', () => {
     describe('getCriticalMass', () => {
         const grid = createGrid(6);
 
-        it('should return 4 for all cells with default config', () => {
+        it('should return 3 for all cells with default config', () => {
             // Corner
-            expect(getCriticalMass(grid, 0, 0, DEFAULT_CONFIG)).toBe(4);
+            expect(getCriticalMass(grid, 0, 0, DEFAULT_CONFIG)).toBe(3);
             // Edge
-            expect(getCriticalMass(grid, 0, 2, DEFAULT_CONFIG)).toBe(4);
+            expect(getCriticalMass(grid, 0, 2, DEFAULT_CONFIG)).toBe(3);
             // Center
-            expect(getCriticalMass(grid, 3, 3, DEFAULT_CONFIG)).toBe(4);
+            expect(getCriticalMass(grid, 3, 3, DEFAULT_CONFIG)).toBe(3);
         });
     });
+
 
     describe('countColors', () => {
         it('should count cells by color correctly', () => {
