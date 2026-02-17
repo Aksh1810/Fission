@@ -1,12 +1,12 @@
 # Fission ⚛️
 
-A chain reaction strategy game built with Next.js, React, and TypeScript.
+A production-grade chain reaction strategy game built with Next.js, React, and TypeScript.
 
-🎮 **[Play Live Demo](https://fission-nu.vercel.app)**
+**[Play Live Demo](https://fission-nu.vercel.app)**
 
 ---
 
-## 🎯 Game Rules
+## Game Rules
 
 1. **Blue goes first**, then turns alternate
 2. Tap your cells to add atoms (shown as dots)
@@ -16,21 +16,35 @@ A chain reaction strategy game built with Next.js, React, and TypeScript.
 
 ---
 
-## ✨ Features
+## Features
 
-| Feature | Description |
-|---|---|
-| 🤖 **Single Player** | Challenge the Minimax AI with 3 difficulty levels |
-| 👥 **Two Players** | Local pass-and-play mode |
-| 💫 **Smooth Animations** | Framer Motion powered explosions and transitions |
-| 🔊 **Sound Effects** | Web Audio API driven click and explosion sounds |
-| 📱 **Responsive Design** | Works on desktop, tablet, and mobile |
-| 🌙 **Dark Theme** | Modern glassmorphism UI |
-| 📊 **Analytics** | Built-in Vercel Analytics |
+### Single Player vs AI
+
+Challenge an AI opponent powered by the **Minimax algorithm with Alpha-Beta Pruning**. Choose from three difficulty levels that control how many moves ahead the AI looks — from casual play at depth 2 to expert-level strategic gameplay at depth 6. The AI uses a center-region opening strategy on its first turn to establish early board control.
+
+### Two Player Mode
+
+Pass-and-play local multiplayer. Two players alternate turns on the same device, competing to trigger chain reactions and capture each other's cells.
+
+### Chain Reaction Engine
+
+The core mechanic uses an **iterative Breadth-First Search** to process explosions. When a cell reaches critical mass (4 atoms), it explodes outward to all neighboring cells, converting them to your color and potentially triggering further chain reactions. A single well-placed move can cascade across the entire board.
+
+### Animations & Visual Effects
+
+Every explosion triggers layered visual feedback — expanding ring effects, particle bursts with sparkle trails, and smooth cell transitions. Atoms render as 3D spheres with gradient shading and wobble animations when cells approach critical mass. All animations are physics-based using Framer Motion.
+
+### Sound Design
+
+Click and explosion sound effects are generated in real-time using the **Web Audio API** for precise timing and low latency. No audio files are loaded — all sounds are synthesized programmatically.
+
+### Responsive Dark UI
+
+A glassmorphism-inspired dark theme with gradient backgrounds, subtle grid overlays, and glowing accents. The interface adapts seamlessly across desktop, tablet, and mobile screen sizes. Interactive elements respond with hover effects, tap feedback, and smooth page transitions.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 src/
@@ -73,21 +87,7 @@ src/
 
 ---
 
-## 📜 Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run test` | Run tests in watch mode |
-| `npm run test:run` | Run tests once |
-| `npm run test:coverage` | Run tests with coverage |
-| `npm run lint` | Lint the codebase |
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
 |---|---|
@@ -101,7 +101,7 @@ src/
 
 ---
 
-## 🎮 AI Difficulty Levels
+## AI Difficulty Levels
 
 | Level | Search Depth | Play Style |
 |---|---|---|
@@ -109,16 +109,14 @@ src/
 | Medium | 4 moves ahead | Balanced — solid strategic play |
 | Hard | 6 moves ahead | Expert — deep lookahead, tough to beat |
 
-The AI uses **Minimax with Alpha-Beta Pruning** for optimal move selection, with a center-region opening strategy on the first turn.
-
 ---
 
-## 📄 License
+## License
 
 MIT License — free to use for learning or building your own games.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Inspired by the classic Chain Reaction game. Built with modern web technologies for a smooth, production-grade experience.
