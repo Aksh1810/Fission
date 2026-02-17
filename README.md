@@ -1,6 +1,6 @@
-# Fission ⚛️
+# Fission
 
-A production-grade chain reaction strategy game built with Next.js, React, and TypeScript.
+A chain reaction strategy game built with Next.js, React, and TypeScript.
 
 **[Play Live Demo](https://fission-nu.vercel.app)**
 
@@ -71,11 +71,9 @@ src/
 │   └── useAudio.ts        # Web Audio API sound manager
 │
 ├── app/                   # Next.js App Router pages
-│   ├── page.tsx           # Home / landing page
-│   ├── singleplayer/      # vs AI mode
-│   └── twoplayer/         # Local multiplayer mode
-│
-└── __tests__/             # Vitest unit tests (52 tests)
+    ├── page.tsx           # Home / landing page
+    ├── singleplayer/      # vs AI mode
+    └── twoplayer/         # Local multiplayer mode
 ```
 
 ### Key Design Decisions
