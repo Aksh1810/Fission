@@ -1,10 +1,8 @@
 # Fission ⚛️
 
-A production-grade chain reaction strategy game built with Next.js, React, and TypeScript.
+A chain reaction strategy game built with Next.js, React, and TypeScript.
 
 🎮 **[Play Live Demo](https://fission-nu.vercel.app)**
-
-![Status](https://img.shields.io/badge/Status-Live-brightgreen) ![Tests](https://img.shields.io/badge/Tests-52%20Passing-success) ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ---
 
@@ -75,27 +73,6 @@ src/
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm or pnpm
-
-### Installation
-
-```bash
-git clone https://github.com/Aksh1810/Fission.git
-cd Fission
-
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to play.
-
----
-
 ## 📜 Scripts
 
 | Command | Description |
@@ -107,23 +84,6 @@ Open [http://localhost:3000](http://localhost:3000) to play.
 | `npm run test:run` | Run tests once |
 | `npm run test:coverage` | Run tests with coverage |
 | `npm run lint` | Lint the codebase |
-
----
-
-## 🧪 Testing
-
-```bash
-npm run test:run
-```
-
-**52 tests** passing across 4 test suites:
-
-| Suite | Tests | Coverage |
-|---|---|---|
-| Grid utilities | 17 | Grid creation, cloning, bounds, neighbors, critical mass |
-| Chain reactions | 8 | Single/multi-step explosions, color conversion |
-| Game rules | 17 | Move validation, first-turn rules, win detection |
-| Game engine | 10 | State transitions, pause/resume, reset |
 
 ---
 
