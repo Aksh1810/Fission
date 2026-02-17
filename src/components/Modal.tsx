@@ -11,9 +11,6 @@ interface ModalProps {
     showCloseButton?: boolean;
 }
 
-/**
- * Premium modal with glass morphism, gradient border accent, and spring animation
- */
 export function Modal({
     isOpen,
     title,
@@ -25,7 +22,6 @@ export function Modal({
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
                     <motion.div
                         className="fixed inset-0 z-40"
                         style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}
@@ -35,7 +31,6 @@ export function Modal({
                         onClick={onClose}
                     />
 
-                    {/* Modal */}
                     <motion.div
                         className="fixed inset-0 flex items-center justify-center z-50 p-4"
                         initial={{ opacity: 0 }}
@@ -50,13 +45,11 @@ export function Modal({
                             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {/* Top gradient accent line */}
                             <div
                                 className="absolute top-0 left-0 right-0 h-[2px]"
                                 style={{ background: 'linear-gradient(90deg, var(--blue), var(--purple), var(--red))' }}
                             />
 
-                            {/* Header */}
                             <div className="flex items-center justify-between mb-5">
                                 <h2 className="text-2xl font-bold text-white">{title}</h2>
                                 {showCloseButton && onClose && (
@@ -72,7 +65,6 @@ export function Modal({
                                 )}
                             </div>
 
-                            {/* Content */}
                             <div className="text-slate-300">
                                 {children}
                             </div>
@@ -94,9 +86,6 @@ interface GameOverModalProps {
     isLoading?: boolean;
 }
 
-/**
- * Cinematic game over modal with themed styling
- */
 export function GameOverModal({
     isOpen,
     winner,
@@ -115,7 +104,6 @@ export function GameOverModal({
 
     return (
         <Modal isOpen={isOpen} title="" showCloseButton={false}>
-            {/* Emoji */}
             <motion.div
                 className="text-center mb-2"
                 initial={{ scale: 0, rotate: -20 }}
@@ -125,7 +113,6 @@ export function GameOverModal({
                 <span className="text-5xl">{emoji}</span>
             </motion.div>
 
-            {/* Title */}
             <motion.h3
                 className="text-3xl font-black text-center mb-2"
                 style={{
@@ -192,9 +179,6 @@ interface DifficultyModalProps {
     onClose: () => void;
 }
 
-/**
- * Difficulty selection with color-coded cards
- */
 export function DifficultyModal({
     isOpen,
     currentDifficulty,
@@ -217,8 +201,8 @@ export function DifficultyModal({
                             key={diff.id}
                             onClick={() => onSelect(diff.id)}
                             className={`w-full py-4 px-4 rounded-xl text-left transition-all duration-200 border ${isActive
-                                    ? 'border-white/15 bg-white/[0.06]'
-                                    : 'border-transparent bg-white/[0.02] hover:bg-white/[0.05]'
+                                ? 'border-white/15 bg-white/[0.06]'
+                                : 'border-transparent bg-white/[0.02] hover:bg-white/[0.05]'
                                 }`}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}

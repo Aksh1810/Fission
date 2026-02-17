@@ -1,12 +1,5 @@
-/**
- * Core module exports
- * Barrel file for clean imports
- */
-
-// Types
 export * from './types';
 
-// Grid utilities
 export {
     createGrid,
     cloneGrid,
@@ -19,13 +12,11 @@ export {
     validateGrid,
 } from './grid';
 
-// Chain reaction
 export {
     processMove,
     simulateMove,
 } from './chainReaction';
 
-// Game rules
 export {
     validateMove,
     checkWinner,
@@ -34,7 +25,6 @@ export {
     getNextPlayer,
 } from './rules';
 
-// Game engine
 export {
     createGameState,
     applyMove,
@@ -44,7 +34,6 @@ export {
     setProcessing,
 } from './engine';
 
-// AI
 export {
     findBestMove,
 } from './ai';

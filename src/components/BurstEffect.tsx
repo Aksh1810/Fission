@@ -9,9 +9,6 @@ interface BurstEffectProps {
     onComplete: () => void;
 }
 
-/**
- * Enhanced burst effect with brighter colors, motion blur trail, and more sparkle particles
- */
 export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) {
     const displacement = 65;
 
@@ -45,7 +42,6 @@ export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) 
 
     return (
         <>
-            {/* Elongated trail */}
             <motion.div
                 className="absolute w-3 h-3 sm:w-4 sm:h-4 rounded-full pointer-events-none"
                 style={{
@@ -62,7 +58,6 @@ export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) 
                 transition={{ duration: 0.22, ease: 'easeOut' }}
             />
 
-            {/* Main burst dot with radial gradient and intense glow */}
             <motion.div
                 className="absolute w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full z-50 pointer-events-none"
                 style={{
@@ -83,7 +78,6 @@ export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) 
                 onAnimationComplete={onComplete}
             />
 
-            {/* Sparkle particles (5 for richer effect) */}
             {[0, 1, 2, 3, 4].map((i) => (
                 <motion.div
                     key={i}

@@ -1,8 +1,3 @@
-/**
- * Minimax AI with Alpha-Beta Pruning
- * Implements a strategic AI opponent
- */
-
 import {
     Cell,
     Player,
@@ -14,10 +9,6 @@ import { cloneGrid, countColors } from './grid';
 import { simulateMove } from './chainReaction';
 import { getValidMoves, checkWinner } from './rules';
 
-/**
- * Evaluates the board state from a player's perspective
- * Returns a score between -100 and 100
- */
 function evaluateBoard(
     colorCount: { R: number; B: number; N: number },
     player: Player
@@ -28,13 +19,9 @@ function evaluateBoard(
 
     if (total === 0) return 0;
 
-    // Score based on cell control ratio
     return ((own - opponent) / total) * 100;
 }
 
-/**
- * Minimax algorithm with alpha-beta pruning
- */
 function minimax(
     grid: readonly (readonly Cell[])[],
     depth: number,
@@ -46,14 +33,12 @@ function minimax(
     aiPlayer: Player,
     config: GameConfig
 ): number {
-    // Check for terminal states
     const winner = checkWinner(turn, colorCount);
     const opponent = aiPlayer === 'R' ? 'B' : 'R';
 
     if (winner === aiPlayer) return Infinity;
     if (winner === opponent) return -Infinity;
 
-    // Depth limit reached
     if (depth === 0) {
         return evaluateBoard(colorCount, aiPlayer);
     }
@@ -61,7 +46,6 @@ function minimax(
     const currentPlayer: Player = isMaximizing ? aiPlayer : opponent;
     const moves = getValidMoves(grid, currentPlayer, turn);
 
-    // No valid moves - this shouldn't happen in normal play
     if (moves.length === 0) {
         return evaluateBoard(colorCount, aiPlayer);
     }
@@ -94,7 +78,7 @@ function minimax(
             maxScore = Math.max(maxScore, score);
             alpha = Math.max(alpha, score);
 
-            if (beta <= alpha) break; // Alpha cutoff
+            if (beta <= alpha) break;
         }
 
         return maxScore;
@@ -126,16 +110,13 @@ function minimax(
             minScore = Math.min(minScore, score);
             beta = Math.min(beta, score);
 
-            if (beta <= alpha) break; // Beta cutoff
+            if (beta <= alpha) break;
         }
 
         return minScore;
     }
 }
 
-/**
- * Finds the best move for the AI player
- */
 export function findBestMove(
     grid: readonly (readonly Cell[])[],
     depth: number,
@@ -146,12 +127,10 @@ export function findBestMove(
 ): AIMove {
     const moves = getValidMoves(grid, aiPlayer, turn);
 
-    // No valid moves - shouldn't happen
     if (moves.length === 0) {
         return { row: 0, col: 0, score: -Infinity };
     }
 
-    // For first turn, use a strategic random move (center-ish)
     if (turn < 2) {
         return findFirstTurnMove(grid, aiPlayer);
     }
@@ -185,19 +164,15 @@ export function findBestMove(
             bestScore = score;
             bestMoves = [{ row: move.row, col: move.col, score }];
         } else if (score === bestScore) {
-            // Collect equal-score moves for randomization
             bestMoves.push({ row: move.row, col: move.col, score });
         }
     }
 
-    // Randomly select among best moves
-    const selected = bestMoves[Math.floor(Math.random() * bestMoves.length)];
-    return selected;
+    return bestMoves[Math.floor(Math.random() * bestMoves.length)];
 }
 
 /**
- * Strategic first turn move selection
- * Avoids edges and corners, prefers center region
+ * First-turn strategy: prefer center region cells away from opponent.
  */
 function findFirstTurnMove(
     grid: readonly (readonly Cell[])[],
@@ -206,7 +181,6 @@ function findFirstTurnMove(
     const size = grid.length;
     const opponent = player === 'R' ? 'B' : 'R';
 
-    // Prefer moves in the center region
     const centerRegion: { row: number; col: number }[] = [];
     const margin = Math.floor(size / 3);
 
@@ -214,7 +188,6 @@ function findFirstTurnMove(
         for (let c = margin; c < size - margin; c++) {
             const cell = grid[r][c];
             if (cell.color === 'N') {
-                // Check if any adjacent cell is opponent's
                 const hasOpponentNeighbor = checkAdjacentForColor(grid, r, c, opponent);
                 if (!hasOpponentNeighbor) {
                     centerRegion.push({ row: r, col: c });
@@ -228,7 +201,6 @@ function findFirstTurnMove(
         return { ...selected, score: 0 };
     }
 
-    // Fallback: any neutral cell
     for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
             if (grid[r][c].color === 'N') {
@@ -240,9 +212,6 @@ function findFirstTurnMove(
     return { row: 0, col: 0, score: 0 };
 }
 
-/**
- * Checks if any adjacent cell has the specified color
- */
 function checkAdjacentForColor(
     grid: readonly (readonly Cell[])[],
     row: number,

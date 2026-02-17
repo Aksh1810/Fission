@@ -6,13 +6,9 @@ interface CellDotsProps {
     value: number;
 }
 
-/**
- * Renders 3D-looking atom spheres with wobble animation on multi-atom cells
- */
 export function CellDots({ value }: CellDotsProps) {
     if (value === 0) return null;
 
-    // 3D sphere appearance: bright highlight → white body → shadow edge
     const dotBaseClass = `
         rounded-full
         bg-gradient-to-br from-white via-gray-50 to-gray-300
@@ -34,7 +30,6 @@ export function CellDots({ value }: CellDotsProps) {
         damping: 22,
     };
 
-    // Add subtle wobble for multi-atom cells
     const shouldWobble = value >= 2;
     const wobbleStyle = shouldWobble ? { animation: 'atom-wobble 2.5s ease-in-out infinite' } : {};
 

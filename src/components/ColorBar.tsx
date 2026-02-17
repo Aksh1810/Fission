@@ -8,9 +8,6 @@ interface ColorBarProps {
     turn: number;
 }
 
-/**
- * Premium color bar with glass container, gradient fills, and animated counts
- */
 export function ColorBar({ colorCount, turn }: ColorBarProps) {
     const total = colorCount.R + colorCount.B;
 
@@ -20,7 +17,6 @@ export function ColorBar({ colorCount, turn }: ColorBarProps) {
     return (
         <div className="w-full max-w-md mx-auto mt-5">
             <div className="hud-bar">
-                {/* Score labels */}
                 <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'linear-gradient(135deg, #60a5fa, #3b82f6)' }} />
@@ -62,7 +58,6 @@ export function ColorBar({ colorCount, turn }: ColorBarProps) {
                     </div>
                 </div>
 
-                {/* Progress bar */}
                 <div className="flex h-2.5 rounded-full overflow-hidden bg-white/[0.04]">
                     <motion.div
                         className="relative"
@@ -74,7 +69,6 @@ export function ColorBar({ colorCount, turn }: ColorBarProps) {
                         animate={{ width: `${bluePercent}%` }}
                         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        {/* Shine effect */}
                         <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent" />
                     </motion.div>
                     <motion.div

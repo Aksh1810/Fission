@@ -9,9 +9,6 @@ interface ExplosionRingProps {
     onComplete?: () => void;
 }
 
-/**
- * Intensified explosion ring with gradient stroke and sharper flash
- */
 export function ExplosionRing({ isExploding, color, onComplete }: ExplosionRingProps) {
     const ringColor = color === 'R'
         ? 'rgba(248, 113, 113, 0.85)'
@@ -25,7 +22,6 @@ export function ExplosionRing({ isExploding, color, onComplete }: ExplosionRingP
         <AnimatePresence>
             {isExploding && (
                 <>
-                    {/* Primary ring — sharper and brighter */}
                     <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none"
                         style={{
@@ -39,7 +35,6 @@ export function ExplosionRing({ isExploding, color, onComplete }: ExplosionRingP
                         onAnimationComplete={onComplete}
                     />
 
-                    {/* Secondary ring — slightly delayed */}
                     <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none"
                         style={{ border: `1.5px solid ${ringColor}` }}
@@ -49,7 +44,6 @@ export function ExplosionRing({ isExploding, color, onComplete }: ExplosionRingP
                         transition={{ duration: 0.32, delay: 0.04, ease: 'easeOut' }}
                     />
 
-                    {/* Center flash — bright white core */}
                     <motion.div
                         className="absolute inset-1 rounded-full pointer-events-none"
                         style={{

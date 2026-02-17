@@ -1,9 +1,3 @@
-/**
- * Chain Reaction Engine
- * Handles the explosion propagation logic using BFS (iterative, not recursive)
- * to avoid stack overflow on large chain reactions
- */
-
 import {
     Cell,
     Player,
@@ -23,8 +17,8 @@ import {
 } from './grid';
 
 /**
- * Process a single cell addition and trigger chain reactions if needed
- * Uses BFS to process explosions iteratively (avoids stack overflow)
+ * Processes a move and triggers chain reactions via iterative BFS
+ * to avoid stack overflow on large chains.
  */
 export function processMove(
     initialGrid: readonly (readonly Cell[])[],
@@ -38,7 +32,6 @@ export function processMove(
     const explosions: Explosion[] = [];
     let steps = 0;
 
-    // Initial placement
     if (isFirstTurn) {
         grid[row][col] = { value: config.firstTurnValue, color: player };
     } else {
@@ -48,13 +41,11 @@ export function processMove(
         };
     }
 
-    // Check if initial cell needs to explode
     const queue: Position[] = [];
     if (grid[row][col].value >= getCriticalMass(grid, row, col, config)) {
         queue.push({ row, col });
     }
 
-    // BFS explosion processing
     while (queue.length > 0 && steps < config.maxChainSteps) {
         const currentBatch = [...queue];
         queue.length = 0;
@@ -66,7 +57,6 @@ export function processMove(
             if (cell.value >= criticalMass) {
                 const cellColor = cell.color as Player;
 
-                // Record explosion for animation
                 explosions.push({
                     position: pos,
                     directions: getExplosionDirections(grid, pos.row, pos.col),
@@ -74,10 +64,8 @@ export function processMove(
                     step: steps,
                 });
 
-                // Reset exploding cell
                 grid[pos.row][pos.col] = { value: 0, color: 'N' };
 
-                // Spread to neighbors
                 const neighbors = getNeighbors(grid, pos.row, pos.col);
                 for (const neighbor of neighbors) {
                     const neighborCell = grid[neighbor.row][neighbor.col];
@@ -86,7 +74,6 @@ export function processMove(
                         color: cellColor,
                     };
 
-                    // Check if neighbor needs to explode
                     const neighborCritical = getCriticalMass(
                         grid,
                         neighbor.row,
@@ -94,7 +81,6 @@ export function processMove(
                         config
                     );
                     if (grid[neighbor.row][neighbor.col].value >= neighborCritical) {
-                        // Avoid duplicates in queue
                         const alreadyQueued = queue.some(
                             p => p.row === neighbor.row && p.col === neighbor.col
                         );
@@ -121,8 +107,7 @@ export function processMove(
 }
 
 /**
- * Simulate a move without animation data (for AI calculations)
- * More efficient version that skips explosion tracking
+ * Lightweight move simulation for AI — skips explosion tracking.
  */
 export function simulateMove(
     initialGrid: readonly (readonly Cell[])[],
@@ -134,7 +119,6 @@ export function simulateMove(
 ): { grid: readonly (readonly Cell[])[]; colorCount: { R: number; B: number; N: number } } {
     const grid = cloneGrid(initialGrid);
 
-    // Initial placement
     if (isFirstTurn) {
         grid[row][col] = { value: config.firstTurnValue, color: player };
     } else {
@@ -144,7 +128,6 @@ export function simulateMove(
         };
     }
 
-    // Check if initial cell needs to explode
     const queue: Position[] = [];
     if (grid[row][col].value >= getCriticalMass(grid, row, col, config)) {
         queue.push({ row, col });
@@ -153,7 +136,6 @@ export function simulateMove(
     let iterations = 0;
     const maxIterations = config.maxChainSteps;
 
-    // BFS explosion processing (simplified)
     while (queue.length > 0 && iterations < maxIterations) {
         const pos = queue.shift()!;
         const cell = grid[pos.row][pos.col];
@@ -162,10 +144,8 @@ export function simulateMove(
         if (cell.value >= criticalMass) {
             const cellColor = cell.color as Player;
 
-            // Reset exploding cell
             grid[pos.row][pos.col] = { value: 0, color: 'N' };
 
-            // Spread to neighbors
             const neighbors = getNeighbors(grid, pos.row, pos.col);
             for (const neighbor of neighbors) {
                 const neighborCell = grid[neighbor.row][neighbor.col];
@@ -174,7 +154,6 @@ export function simulateMove(
                     color: cellColor,
                 };
 
-                // Check if neighbor needs to explode
                 const neighborCritical = getCriticalMass(
                     grid,
                     neighbor.row,

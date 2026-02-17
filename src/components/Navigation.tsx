@@ -35,9 +35,6 @@ const navItems: NavItem[] = [
     { href: '/twoplayer', label: '2 Players', icon: <PlayersIcon /> },
 ];
 
-/**
- * Navigation with animated sliding pill indicator
- */
 export function Navigation() {
     const pathname = usePathname();
 

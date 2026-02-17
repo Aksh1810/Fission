@@ -22,9 +22,6 @@ interface CellProps {
     onBurstComplete: (id: number) => void;
 }
 
-/**
- * Premium game cell with refined gradients, glow effects, and critical-mass animation
- */
 export function GameCell({
     cell,
     rowIndex,
@@ -79,7 +76,6 @@ export function GameCell({
             transition={{ type: 'spring', stiffness: 500, damping: 25 }}
         >
             <div className="relative flex justify-center items-center w-full h-full">
-                {/* Cell background with refined styling */}
                 <motion.div
                     className="absolute inset-0.5 rounded-[0.625rem]"
                     initial={false}
@@ -95,7 +91,6 @@ export function GameCell({
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                 />
 
-                {/* Critical mass pulse */}
                 <AnimatePresence>
                     {isNearCritical && (
                         <motion.div
@@ -118,7 +113,6 @@ export function GameCell({
                     )}
                 </AnimatePresence>
 
-                {/* Dot pattern */}
                 <motion.div
                     className="relative z-10 w-full h-full"
                     animate={{ scale: isExploding ? 0 : 1 }}
@@ -127,13 +121,11 @@ export function GameCell({
                     <CellDots value={cell.value} />
                 </motion.div>
 
-                {/* Explosion ring */}
                 <ExplosionRing
                     isExploding={isExploding}
                     color={cell.color === 'N' ? 'B' : cell.color}
                 />
 
-                {/* Burst animations */}
                 {burstDots.map((burst) => (
                     <BurstEffect
                         key={burst.id}

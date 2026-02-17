@@ -1,7 +1,3 @@
-/**
- * Component exports
- */
-
 export { CellDots } from './CellDots';
 export { BurstEffect } from './BurstEffect';
 export { GameCell } from './GameCell';

@@ -20,9 +20,6 @@ interface GameBoardProps {
     onBurstComplete: (id: number) => void;
 }
 
-/**
- * Game board with glass-frame container and entrance animation
- */
 export function GameBoard({
     grid,
     onCellClick,

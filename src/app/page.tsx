@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-// Stagger children animation
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -42,7 +41,6 @@ const floatVariant = {
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 relative overflow-hidden">
-      {/* Floating decorative atoms */}
       <motion.div
         className="absolute top-20 left-[15%] w-3 h-3 rounded-full opacity-20"
         style={{ background: 'radial-gradient(circle at 30% 30%, white, var(--blue))' }}
@@ -70,7 +68,6 @@ export default function Home() {
         animate="show"
         className="flex flex-col items-center w-full max-w-lg relative z-10"
       >
-        {/* Hero */}
         <motion.div variants={item} className="text-center mb-10">
           <h1 className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tight mb-4">
             <span
@@ -89,7 +86,6 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* Game Mode Buttons */}
         <motion.div variants={item} className="flex flex-col gap-4 w-full mb-10">
           <Link href="/singleplayer" className="block group">
             <motion.div
@@ -98,7 +94,6 @@ export default function Home() {
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              {/* Blue glow accent */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse at 0% 50%, rgba(96,165,250,0.08), transparent 60%)' }} />
 
@@ -125,7 +120,6 @@ export default function Home() {
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              {/* Purple glow accent */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse at 0% 50%, rgba(168,85,247,0.08), transparent 60%)' }} />
 
@@ -146,7 +140,6 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        {/* How to Play */}
         <motion.div variants={item} className="w-full">
           <div className="glass rounded-2xl px-6 py-5">
             <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 text-center">How to Play</h2>
@@ -171,7 +164,6 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* Footer */}
         <motion.p variants={item} className="text-xs text-slate-600 mt-8">
           Strategic Chain Reaction Game
         </motion.p>

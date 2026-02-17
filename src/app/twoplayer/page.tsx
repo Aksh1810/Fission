@@ -79,9 +79,7 @@ export default function TwoPlayer() {
         >
             <Navigation />
 
-            {/* Unified HUD Bar */}
             <div className="hud-bar flex items-center gap-3 mb-5">
-                {/* Turn Indicator */}
                 <div className="flex items-center gap-2 px-2">
                     <div className={`w-2 h-2 rounded-full ${gameState.currentPlayer === 'B' ? 'bg-blue-400' : 'bg-red-400'}`}
                         style={{ boxShadow: `0 0 6px ${gameState.currentPlayer === 'B' ? 'rgba(96,165,250,0.5)' : 'rgba(248,113,113,0.5)'}` }}
@@ -91,10 +89,8 @@ export default function TwoPlayer() {
                     </span>
                 </div>
 
-                {/* Divider */}
                 <div className="w-px h-4 bg-white/[0.06]" />
 
-                {/* Sound toggle */}
                 <button
                     onClick={handleToggleSound}
                     className="p-1.5 text-slate-500 hover:text-slate-200 rounded-lg hover:bg-white/[0.04] transition-colors"
@@ -113,7 +109,6 @@ export default function TwoPlayer() {
                 </button>
             </div>
 
-            {/* Game Board */}
             <GameBoard
                 grid={gameState.grid}
                 onCellClick={handleCellClick}
@@ -122,16 +117,13 @@ export default function TwoPlayer() {
                 onBurstComplete={removeBurst}
             />
 
-            {/* Color Bar */}
             <ColorBar colorCount={gameState.colorCount} turn={displayedTurn} />
 
-            {/* Game Over Modal */}
             <Modal
                 isOpen={isGameOver}
                 title=""
                 showCloseButton={false}
             >
-                {/* Trophy */}
                 <motion.div
                     className="text-center mb-2"
                     initial={{ scale: 0, rotate: -20 }}

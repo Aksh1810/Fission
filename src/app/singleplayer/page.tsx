@@ -106,9 +106,7 @@ export default function SinglePlayer() {
         >
             <Navigation />
 
-            {/* Unified HUD Bar */}
             <div className="hud-bar flex items-center gap-3 mb-5">
-                {/* Difficulty */}
                 <button
                     onClick={() => setShowDifficultyModal(true)}
                     className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-200 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.04]"
@@ -122,10 +120,8 @@ export default function SinglePlayer() {
                     </svg>
                 </button>
 
-                {/* Divider */}
                 <div className="w-px h-4 bg-white/[0.06]" />
 
-                {/* Turn Indicator */}
                 <div className="flex items-center gap-2 px-2">
                     {isAiTurn ? (
                         <motion.div
@@ -145,10 +141,8 @@ export default function SinglePlayer() {
                     <span className={`text-xs font-semibold ${turnColor}`}>{turnText}</span>
                 </div>
 
-                {/* Divider */}
                 <div className="w-px h-4 bg-white/[0.06]" />
 
-                {/* Sound toggle */}
                 <button
                     onClick={handleToggleSound}
                     className="p-1.5 text-slate-500 hover:text-slate-200 rounded-lg hover:bg-white/[0.04] transition-colors"
@@ -167,7 +161,6 @@ export default function SinglePlayer() {
                 </button>
             </div>
 
-            {/* Game Board */}
             <GameBoard
                 grid={gameState.grid}
                 onCellClick={handleCellClick}
@@ -176,10 +169,8 @@ export default function SinglePlayer() {
                 onBurstComplete={removeBurst}
             />
 
-            {/* Color Bar */}
             <ColorBar colorCount={gameState.colorCount} turn={displayedTurn} />
 
-            {/* Modals */}
             <DifficultyModal
                 isOpen={showDifficultyModal}
                 currentDifficulty={difficulty}
