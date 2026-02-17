@@ -74,7 +74,7 @@ export function GameCell({
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent
                 overflow-visible game-no-select
             `}
-            whileHover={!disabled ? { brightness: 1.15 } : {}}
+            whileHover={!disabled ? { filter: 'brightness(1.15)' } : {}}
             whileTap={!disabled ? { scale: 0.93 } : {}}
             transition={{ type: 'spring', stiffness: 500, damping: 25 }}
         >

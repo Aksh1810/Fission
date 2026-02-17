@@ -12,7 +12,7 @@ const pageVariants = {
     show: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
     },
 };
 
@@ -114,7 +114,7 @@ export default function SinglePlayer() {
                     className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-200 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.04]"
                 >
                     <span className={`w-2 h-2 rounded-full ${difficulty === 'easy' ? 'bg-green-400' :
-                            difficulty === 'medium' ? 'bg-yellow-400' : 'bg-red-400'
+                        difficulty === 'medium' ? 'bg-yellow-400' : 'bg-red-400'
                         }`} />
                     <span className="font-medium text-white capitalize text-xs">{difficulty}</span>
                     <svg className="w-3 h-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
