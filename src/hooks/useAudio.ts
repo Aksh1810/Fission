@@ -2,9 +2,6 @@
 
 import { useCallback, useRef, useEffect } from 'react';
 
-/**
- * Uses Web Audio API for precise timing and low latency sound effects.
- */
 class AudioManager {
     private audioContext: AudioContext | null = null;
     private clickBuffer: AudioBuffer | null = null;
