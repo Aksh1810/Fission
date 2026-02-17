@@ -10,7 +10,7 @@ interface BurstEffectProps {
 }
 
 /**
- * Enhanced burst effect with particle trail and glow
+ * Enhanced burst effect with brighter colors, motion blur trail, and more sparkle particles
  */
 export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) {
     const displacement = 65;
@@ -28,14 +28,16 @@ export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) 
 
     const colors = {
         R: {
-            main: 'rgb(239, 68, 68)',
-            glow: 'rgba(239, 68, 68, 0.6)',
-            trail: 'rgba(239, 68, 68, 0.3)',
+            main: '#f87171',
+            bright: '#fca5a5',
+            glow: 'rgba(248, 113, 113, 0.7)',
+            trail: 'rgba(248, 113, 113, 0.35)',
         },
         B: {
-            main: 'rgb(59, 130, 246)',
-            glow: 'rgba(59, 130, 246, 0.6)',
-            trail: 'rgba(59, 130, 246, 0.3)',
+            main: '#60a5fa',
+            bright: '#93c5fd',
+            glow: 'rgba(96, 165, 250, 0.7)',
+            trail: 'rgba(96, 165, 250, 0.35)',
         },
     };
 
@@ -43,76 +45,63 @@ export function BurstEffect({ direction, color, onComplete }: BurstEffectProps) 
 
     return (
         <>
-            {/* Trail effect */}
+            {/* Elongated trail */}
             <motion.div
-                className="absolute w-2 h-2 sm:w-3 sm:h-3 rounded-full pointer-events-none"
+                className="absolute w-3 h-3 sm:w-4 sm:h-4 rounded-full pointer-events-none"
                 style={{
                     background: colorSet.trail,
-                    filter: 'blur(4px)',
+                    filter: 'blur(6px)',
                 }}
-                initial={{ x: 0, y: 0, opacity: 0.8, scale: 1 }}
+                initial={{ x: 0, y: 0, opacity: 0.9, scale: 1 }}
                 animate={{
-                    x: target.x * 0.6,
-                    y: target.y * 0.6,
+                    x: target.x * 0.5,
+                    y: target.y * 0.5,
                     opacity: 0,
-                    scale: 0.3,
+                    scale: 0.2,
                 }}
-                transition={{
-                    duration: 0.25,
-                    ease: 'easeOut',
-                }}
+                transition={{ duration: 0.22, ease: 'easeOut' }}
             />
 
-            {/* Main burst dot with glow */}
+            {/* Main burst dot with radial gradient and intense glow */}
             <motion.div
-                className="absolute w-3 h-3 sm:w-4 sm:h-4 rounded-full z-50 pointer-events-none"
+                className="absolute w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full z-50 pointer-events-none"
                 style={{
-                    background: `radial-gradient(circle at 30% 30%, white, ${colorSet.main})`,
-                    boxShadow: `0 0 12px ${colorSet.glow}, 0 0 24px ${colorSet.trail}`,
+                    background: `radial-gradient(circle at 35% 35%, white, ${colorSet.bright}, ${colorSet.main})`,
+                    boxShadow: `0 0 16px ${colorSet.glow}, 0 0 32px ${colorSet.trail}`,
                 }}
-                initial={{
-                    x: 0,
-                    y: 0,
-                    opacity: 1,
-                    scale: 1.8,
-                }}
+                initial={{ x: 0, y: 0, opacity: 1, scale: 1.6 }}
                 animate={{
                     x: target.x,
                     y: target.y,
                     opacity: 0,
-                    scale: 0.4,
+                    scale: 0.3,
                 }}
                 transition={{
-                    duration: 0.35,
-                    ease: [0.25, 0.46, 0.45, 0.94], // Smooth easeOutQuad
+                    duration: 0.32,
+                    ease: [0.25, 0.46, 0.45, 0.94],
                 }}
                 onAnimationComplete={onComplete}
             />
 
-            {/* Sparkle particles */}
-            {[0, 1, 2].map((i) => (
+            {/* Sparkle particles (5 for richer effect) */}
+            {[0, 1, 2, 3, 4].map((i) => (
                 <motion.div
                     key={i}
                     className="absolute w-1 h-1 rounded-full pointer-events-none"
                     style={{
-                        background: 'white',
+                        background: i < 2 ? 'white' : colorSet.bright,
                         boxShadow: `0 0 4px ${colorSet.main}`,
                     }}
-                    initial={{
-                        x: 0,
-                        y: 0,
-                        opacity: 0.9,
-                        scale: 1,
-                    }}
+                    initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
                     animate={{
-                        x: target.x * (0.3 + i * 0.25) + (i - 1) * 8,
-                        y: target.y * (0.3 + i * 0.25) + (i - 1) * 8,
+                        x: target.x * (0.2 + i * 0.18) + (i - 2) * 6,
+                        y: target.y * (0.2 + i * 0.18) + (i - 2) * 6,
                         opacity: 0,
                         scale: 0,
                     }}
                     transition={{
-                        duration: 0.3,
-                        delay: i * 0.03,
+                        duration: 0.28,
+                        delay: i * 0.02,
                         ease: 'easeOut',
                     }}
                 />

@@ -6,7 +6,6 @@ import { CellDots } from './CellDots';
 import { BurstEffect } from './BurstEffect';
 import { ExplosionRing } from './ExplosionRing';
 
-
 interface BurstDot {
     id: number;
     direction: Direction;
@@ -24,7 +23,7 @@ interface CellProps {
 }
 
 /**
- * Individual cell component with enhanced animations and explosion effects
+ * Premium game cell with refined gradients, glow effects, and critical-mass animation
  */
 export function GameCell({
     cell,
@@ -35,34 +34,32 @@ export function GameCell({
     burstDots,
     onBurstComplete,
 }: CellProps) {
-    // Explosion is happening when there are burst dots from this cell
     const isExploding = burstDots.length > 0;
 
-
-    // Enhanced color palette with richer, more vibrant colors
     const colors = {
         R: {
-            bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%)',
-            solid: '#ef4444',
-            glow: 'rgba(239, 68, 68, 0.5)',
+            bg: 'radial-gradient(ellipse at 35% 35%, #ff6b6b 0%, #ef4444 40%, #b91c1c 100%)',
+            glow: 'rgba(248, 113, 113, 0.45)',
+            glowSubtle: 'rgba(248, 113, 113, 0.08)',
+            ring: 'rgba(248, 113, 113, 0.25)',
         },
         B: {
-            bg: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
-            solid: '#3b82f6',
-            glow: 'rgba(59, 130, 246, 0.5)',
+            bg: 'radial-gradient(ellipse at 35% 35%, #7dd3fc 0%, #3b82f6 40%, #1d4ed8 100%)',
+            glow: 'rgba(96, 165, 250, 0.45)',
+            glowSubtle: 'rgba(96, 165, 250, 0.08)',
+            ring: 'rgba(96, 165, 250, 0.25)',
         },
         N: {
-            bg: 'linear-gradient(135deg, #4b5563 0%, #374151 50%, #1f2937 100%)',
-            solid: '#374151',
+            bg: 'radial-gradient(ellipse at 40% 40%, #283044 0%, #1a2236 60%, #111827 100%)',
             glow: 'transparent',
+            glowSubtle: 'transparent',
+            ring: 'rgba(255, 255, 255, 0.03)',
         },
     };
 
     const colorSet = colors[cell.color];
-
-    // Increased glow when near critical mass
-    const isNearCritical = cell.value >= 3 && cell.color !== 'N';
-    const pulseGlow = isNearCritical ? `0 0 20px ${colorSet.glow}` : 'none';
+    const isOccupied = cell.color !== 'N';
+    const isNearCritical = cell.value >= 3 && isOccupied;
 
     return (
         <motion.button
@@ -70,55 +67,58 @@ export function GameCell({
             onClick={onClick}
             disabled={disabled}
             className={`
-                relative p-1 sm:p-1.5 md:p-2
-                rounded-xl bg-gray-800
-                h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-20 lg:w-20
+                relative
+                rounded-xl
+                h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-[4.5rem] lg:w-[4.5rem]
                 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
-                focus:outline-none focus:ring-2 focus:ring-white/50
-                overflow-visible
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent
+                overflow-visible game-no-select
             `}
-            whileHover={!disabled ? { scale: 1.08 } : {}}
-            whileTap={!disabled ? { scale: 0.92 } : {}}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            whileHover={!disabled ? { brightness: 1.15 } : {}}
+            whileTap={!disabled ? { scale: 0.93 } : {}}
+            transition={{ type: 'spring', stiffness: 500, damping: 25 }}
         >
             <div className="relative flex justify-center items-center w-full h-full">
-                {/* Cell background circle with glow */}
+                {/* Cell background with refined styling */}
                 <motion.div
-                    className="absolute inset-1 rounded-full"
+                    className="absolute inset-0.5 rounded-[0.625rem]"
                     initial={false}
                     animate={{
-                        boxShadow: pulseGlow,
+                        boxShadow: isOccupied
+                            ? `0 0 ${isNearCritical ? '18px' : '10px'} ${colorSet.glow}, inset 0 1px 0 rgba(255,255,255,0.08)`
+                            : 'inset 0 2px 4px rgba(0,0,0,0.3), inset 0 -1px 0 rgba(255,255,255,0.03)',
                     }}
                     style={{
                         background: colorSet.bg,
+                        border: `1px solid ${isOccupied ? colorSet.ring : 'rgba(255,255,255,0.04)'}`,
                     }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
                 />
 
-                {/* Pulse animation for cells near critical mass */}
+                {/* Critical mass pulse */}
                 <AnimatePresence>
                     {isNearCritical && (
                         <motion.div
-                            className="absolute inset-1 rounded-full pointer-events-none"
-                            initial={{ opacity: 0, scale: 1 }}
+                            className="absolute inset-0 rounded-xl pointer-events-none"
+                            initial={{ opacity: 0 }}
                             animate={{
-                                opacity: [0.3, 0.6, 0.3],
-                                scale: [1, 1.05, 1],
+                                opacity: [0.2, 0.5, 0.2],
+                                scale: [1, 1.08, 1],
                             }}
                             exit={{ opacity: 0 }}
                             transition={{
-                                duration: 0.8,
+                                duration: 1,
                                 repeat: Infinity,
                                 ease: 'easeInOut',
                             }}
                             style={{
-                                background: `radial-gradient(circle, transparent 50%, ${colorSet.glow} 100%)`,
+                                background: `radial-gradient(circle, transparent 40%, ${colorSet.glow} 100%)`,
                             }}
                         />
                     )}
                 </AnimatePresence>
 
-                {/* Dot pattern with smooth transitions */}
+                {/* Dot pattern */}
                 <motion.div
                     className="relative z-10 w-full h-full"
                     animate={{ scale: isExploding ? 0 : 1 }}
@@ -127,13 +127,13 @@ export function GameCell({
                     <CellDots value={cell.value} />
                 </motion.div>
 
-                {/* Explosion ring effect */}
+                {/* Explosion ring */}
                 <ExplosionRing
                     isExploding={isExploding}
                     color={cell.color === 'N' ? 'B' : cell.color}
                 />
 
-                {/* Burst animations flying outward */}
+                {/* Burst animations */}
                 {burstDots.map((burst) => (
                     <BurstEffect
                         key={burst.id}

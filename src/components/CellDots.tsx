@@ -7,23 +7,20 @@ interface CellDotsProps {
 }
 
 /**
- * Renders professional-looking atoms (dots) inside a cell
- * Uses white orbs with shadows and smooth animations for a polished look
+ * Renders 3D-looking atom spheres with wobble animation on multi-atom cells
  */
 export function CellDots({ value }: CellDotsProps) {
     if (value === 0) return null;
 
-    // Professional orb styling with gradient and shadow for depth
+    // 3D sphere appearance: bright highlight → white body → shadow edge
     const dotBaseClass = `
         rounded-full
-        bg-gradient-to-br from-white via-gray-100 to-gray-300
-        shadow-[inset_-1px_-1px_3px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)]
-        border border-white/50
+        bg-gradient-to-br from-white via-gray-50 to-gray-300
+        shadow-[inset_-1px_-2px_3px_rgba(0,0,0,0.35),0_1px_3px_rgba(0,0,0,0.5)]
+        border border-white/60
     `;
 
-    // Size classes for different screen sizes
-    const sizeClass = "w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4";
-
+    const sizeClass = 'w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4';
     const dotClass = `${dotBaseClass} ${sizeClass}`;
 
     const dotVariants = {
@@ -32,14 +29,17 @@ export function CellDots({ value }: CellDotsProps) {
     };
 
     const springTransition = {
-        type: "spring" as const,
+        type: 'spring' as const,
         stiffness: 500,
-        damping: 25,
+        damping: 22,
     };
+
+    // Add subtle wobble for multi-atom cells
+    const shouldWobble = value >= 2;
+    const wobbleStyle = shouldWobble ? { animation: 'atom-wobble 2.5s ease-in-out infinite' } : {};
 
     switch (value) {
         case 1:
-            // Single centered dot
             return (
                 <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div
@@ -53,9 +53,8 @@ export function CellDots({ value }: CellDotsProps) {
             );
 
         case 2:
-            // Two dots side by side
             return (
-                <div className="absolute inset-0 flex items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5">
+                <div className="absolute inset-0 flex items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5" style={wobbleStyle}>
                     <motion.div
                         className={dotClass}
                         variants={dotVariants}
@@ -68,15 +67,14 @@ export function CellDots({ value }: CellDotsProps) {
                         variants={dotVariants}
                         initial="initial"
                         animate="animate"
-                        transition={{ ...springTransition, delay: 0.05 }}
+                        transition={{ ...springTransition, delay: 0.06 }}
                     />
                 </div>
             );
 
         case 3:
-            // Triangle formation (1 on top, 2 on bottom)
             return (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5 sm:gap-1">
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5 sm:gap-1" style={wobbleStyle}>
                     <motion.div
                         className={dotClass}
                         variants={dotVariants}
@@ -90,14 +88,14 @@ export function CellDots({ value }: CellDotsProps) {
                             variants={dotVariants}
                             initial="initial"
                             animate="animate"
-                            transition={{ ...springTransition, delay: 0.05 }}
+                            transition={{ ...springTransition, delay: 0.06 }}
                         />
                         <motion.div
                             className={dotClass}
                             variants={dotVariants}
                             initial="initial"
                             animate="animate"
-                            transition={{ ...springTransition, delay: 0.1 }}
+                            transition={{ ...springTransition, delay: 0.12 }}
                         />
                     </div>
                 </div>
@@ -105,9 +103,8 @@ export function CellDots({ value }: CellDotsProps) {
 
         case 4:
         default:
-            // Four corners (critical mass visual)
             return (
-                <div className="absolute inset-1.5 sm:inset-2 md:inset-2.5 lg:inset-3">
+                <div className="absolute inset-1.5 sm:inset-2 md:inset-2.5 lg:inset-3" style={wobbleStyle}>
                     <motion.div
                         className={`${dotClass} absolute top-0 left-0`}
                         variants={dotVariants}
@@ -120,21 +117,21 @@ export function CellDots({ value }: CellDotsProps) {
                         variants={dotVariants}
                         initial="initial"
                         animate="animate"
-                        transition={{ ...springTransition, delay: 0.03 }}
+                        transition={{ ...springTransition, delay: 0.04 }}
                     />
                     <motion.div
                         className={`${dotClass} absolute bottom-0 left-0`}
                         variants={dotVariants}
                         initial="initial"
                         animate="animate"
-                        transition={{ ...springTransition, delay: 0.06 }}
+                        transition={{ ...springTransition, delay: 0.08 }}
                     />
                     <motion.div
                         className={`${dotClass} absolute bottom-0 right-0`}
                         variants={dotVariants}
                         initial="initial"
                         animate="animate"
-                        transition={{ ...springTransition, delay: 0.09 }}
+                        transition={{ ...springTransition, delay: 0.12 }}
                     />
                 </div>
             );

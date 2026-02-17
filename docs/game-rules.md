@@ -8,16 +8,19 @@
 ## 1. Game Setup & Initial State
 
 ### Grid
+
 - **Dimensions**: 6×6 grid (indices 0–5)
 - **Initial state**: All 36 cells are Empty (`'N'`) with value `0`
 
 ### Players
-| Player | Color | Turn Order |
-|--------|-------|------------|
+
+| Player | Color | Turn Order              |
+|--------|-------|-------------------------|
 | Blue   | `'B'` | Even turns (0, 2, 4...) |
-| Red    | `'R'` | Odd turns (1, 3, 5...) |
+| Red    | `'R'` | Odd turns (1, 3, 5...)  |
 
 ### Atom Capacity
+
 - Cells display 1–3 atoms visually
 - Value of **4 or more** triggers immediate explosion
 
@@ -28,7 +31,7 @@
 ### Phase 1: Opening (Turns 0 & 1)
 
 | Rule | Description |
-|------|-------------|
+| ---- | ----------- |
 | **Allowed cells** | Empty (`'N'`) cells only |
 | **Placement effect** | Sets cell value to **3** (not 1) |
 | **Restriction** | Cannot click opponent's cells |
@@ -45,7 +48,7 @@ if (turn > 1) {
 ### Phase 2: Battle (Turn 2+)
 
 | Rule | Description |
-|------|-------------|
+| ---- | ----------- |
 | **Allowed cells** | Own color only |
 | **Empty cells** | **BLOCKED** - cannot click |
 | **Click effect** | Increments value by +1 |
@@ -63,6 +66,7 @@ if (cell.color !== 'N' && cell.color !== color) return;  // Opponent lockout
 ## 3. Atom Behavior & Explosion Logic
 
 ### Explosion Trigger
+
 - **Condition**: Cell value reaches **≥ 4**
 - **Timing**: Immediate after value increment
 
@@ -100,7 +104,7 @@ const recursiveFill = (cells, row, col, color, colorCount) => {
 ## 4. Win/Loss Conditions
 
 | Condition | Description |
-|-----------|-------------|
+| --------- | ----------- |
 | **Win** | Opponent has 0 atoms remaining |
 | **Grace period** | Win check disabled for turns 0-1 |
 | **Check timing** | After all chain reactions resolve |
@@ -120,16 +124,19 @@ const checkWinner = (turn, colorCount) => {
 ## 5. Technical Constraints & Edge Cases
 
 ### Grid Boundaries
+
 - Corner cells: Distribute 2 atoms (2 neighbors)
 - Edge cells: Distribute 3 atoms (3 neighbors)
 - Center cells: Distribute 4 atoms (4 neighbors)
 - "Lost" atoms at boundaries disappear from game
 
 ### Processing Lock
+
 - User input disabled during chain reaction animations
 - Prevents state corruption from rapid clicks
 
 ### AI Constraints (Single Player)
+
 - First move: AI targets center 2×2 zone (rows 2-3, cols 2-3)
 - Validates not adjacent to Blue cell
 - Uses Minimax with Alpha-Beta pruning after first turn
@@ -173,6 +180,7 @@ Before any logic change, verify:
 Source: [kensunjaya/chroma-war](https://github.com/kensunjaya/chroma-war)
 
 Key files:
+
 - `src/utils/FunctionUtils.tsx` - Core game logic
 - `src/app/singleplayer/page.tsx` - Click handling & state management
 - `src/interfaces/Types.tsx` - Type definitions

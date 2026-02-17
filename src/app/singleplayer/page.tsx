@@ -2,9 +2,19 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { useGame, useAudio } from '@/hooks';
 import { GameBoard, ColorBar, Navigation, GameOverModal, DifficultyModal } from '@/components';
 import { Difficulty } from '@/core/types';
+
+const pageVariants = {
+    hidden: { opacity: 0, y: 12 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    },
+};
 
 export default function SinglePlayer() {
     const router = useRouter();
@@ -16,7 +26,6 @@ export default function SinglePlayer() {
     const { initAudio, playClick, playExplosion, toggleSound } = useAudio();
 
     // AI goes first in Medium/Hard modes for balanced gameplay
-    // Easy: Player is Blue (goes first), Medium/Hard: Player is Red (AI goes first)
     const playerColor = difficulty === 'easy' ? 'B' : 'R';
 
     const {
@@ -34,21 +43,18 @@ export default function SinglePlayer() {
         playerColor,
     });
 
-    // Wrap cell click with audio
     const handleCellClick = useCallback(async (row: number, col: number) => {
         await initAudio();
         playClick();
         originalHandleCellClick(row, col);
     }, [initAudio, playClick, originalHandleCellClick]);
 
-    // Play explosion sound when bursts happen
     useEffect(() => {
         if (burstDots.length > 0) {
             playExplosion();
         }
     }, [burstDots.length, playExplosion]);
 
-    // Load difficulty from localStorage on mount
     useEffect(() => {
         setIsClient(true);
         const savedDifficulty = localStorage.getItem('fission-difficulty');
@@ -72,18 +78,10 @@ export default function SinglePlayer() {
         setSoundEnabled(newState);
     };
 
-    const handleRematch = () => {
-        resetGame();
-    };
-
-    const handleMainMenu = () => {
-        router.push('/');
-    };
-
     if (!isClient) {
         return (
             <main className="min-h-screen flex items-center justify-center">
-                <div className="text-gray-400">Loading...</div>
+                <div className="text-slate-500 text-sm">Loading...</div>
             </main>
         );
     }
@@ -92,73 +90,94 @@ export default function SinglePlayer() {
     const isPlayerWinner = gameState.winner === playerColor;
     const isDisabled = isProcessing || isAiTurn || isGameOver;
 
+    const turnColor = gameState.currentPlayer === 'B' ? 'text-blue-400' : 'text-red-400';
+    const turnText = isProcessing
+        ? 'Processing...'
+        : isAiTurn
+            ? 'AI is thinking'
+            : 'Your Turn';
+
     return (
-        <main className="min-h-screen flex flex-col items-center pt-8 pb-16 px-4">
+        <motion.main
+            className="min-h-screen flex flex-col items-center pt-6 pb-16 px-4 game-no-select"
+            variants={pageVariants}
+            initial="hidden"
+            animate="show"
+        >
             <Navigation />
 
-            {/* Top controls */}
-            <div className="flex items-center gap-4 mb-4">
-                {/* Difficulty selector */}
+            {/* Unified HUD Bar */}
+            <div className="hud-bar flex items-center gap-3 mb-5">
+                {/* Difficulty */}
                 <button
                     onClick={() => setShowDifficultyModal(true)}
-                    className="px-4 py-2 text-sm text-gray-400 hover:text-white 
-                       bg-gray-800 rounded-lg transition-colors flex items-center gap-2"
+                    className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-200 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.04]"
                 >
-                    <span>Difficulty:</span>
-                    <span className="font-semibold text-white capitalize">{difficulty}</span>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <span className={`w-2 h-2 rounded-full ${difficulty === 'easy' ? 'bg-green-400' :
+                            difficulty === 'medium' ? 'bg-yellow-400' : 'bg-red-400'
+                        }`} />
+                    <span className="font-medium text-white capitalize text-xs">{difficulty}</span>
+                    <svg className="w-3 h-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
+
+                {/* Divider */}
+                <div className="w-px h-4 bg-white/[0.06]" />
+
+                {/* Turn Indicator */}
+                <div className="flex items-center gap-2 px-2">
+                    {isAiTurn ? (
+                        <motion.div
+                            className="flex gap-0.5"
+                            animate={{ opacity: [0.4, 1, 0.4] }}
+                            transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+                        >
+                            {[0, 1, 2].map(i => (
+                                <div key={i} className="w-1 h-1 rounded-full bg-blue-400" />
+                            ))}
+                        </motion.div>
+                    ) : (
+                        <div className={`w-2 h-2 rounded-full ${gameState.currentPlayer === 'B' ? 'bg-blue-400' : 'bg-red-400'}`}
+                            style={{ boxShadow: `0 0 6px ${gameState.currentPlayer === 'B' ? 'rgba(96,165,250,0.5)' : 'rgba(248,113,113,0.5)'}` }}
+                        />
+                    )}
+                    <span className={`text-xs font-semibold ${turnColor}`}>{turnText}</span>
+                </div>
+
+                {/* Divider */}
+                <div className="w-px h-4 bg-white/[0.06]" />
 
                 {/* Sound toggle */}
                 <button
                     onClick={handleToggleSound}
-                    className="p-2 text-gray-400 hover:text-white bg-gray-800 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-500 hover:text-slate-200 rounded-lg hover:bg-white/[0.04] transition-colors"
                     aria-label={soundEnabled ? 'Mute sound' : 'Unmute sound'}
                 >
                     {soundEnabled ? (
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                d="M15.536 8.464a5 5 0 010 7.072M12 6l-4 4H4v4h4l4 4V6z" />
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6l-4 4H4v4h4l4 4V6z" />
                         </svg>
                     ) : (
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                         </svg>
                     )}
                 </button>
             </div>
 
             {/* Game Board */}
-            <div className="mt-4">
-                <GameBoard
-                    grid={gameState.grid}
-                    onCellClick={handleCellClick}
-                    disabled={isDisabled}
-                    burstDots={burstDots}
-                    onBurstComplete={removeBurst}
-                />
-            </div>
+            <GameBoard
+                grid={gameState.grid}
+                onCellClick={handleCellClick}
+                disabled={isDisabled}
+                burstDots={burstDots}
+                onBurstComplete={removeBurst}
+            />
 
             {/* Color Bar */}
             <ColorBar colorCount={gameState.colorCount} turn={displayedTurn} />
-
-            {/* Turn Indicator */}
-            <div className="mt-6 text-center">
-                <p className={`text-xl font-semibold ${gameState.currentPlayer === 'B' ? 'text-blue-400' : 'text-red-400'
-                    }`}>
-                    {isProcessing
-                        ? 'Processing...'
-                        : isAiTurn
-                            ? "AI's Turn"
-                            : 'Your Turn'
-                    }
-                </p>
-            </div>
 
             {/* Modals */}
             <DifficultyModal
@@ -173,9 +192,9 @@ export default function SinglePlayer() {
                 winner={gameState.winner}
                 turns={displayedTurn}
                 isPlayerWinner={isPlayerWinner}
-                onRematch={handleRematch}
-                onMainMenu={handleMainMenu}
+                onRematch={resetGame}
+                onMainMenu={() => router.push('/')}
             />
-        </main>
+        </motion.main>
     );
 }

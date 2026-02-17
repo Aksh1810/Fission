@@ -6,7 +6,7 @@ import { DEFAULT_CONFIG } from '@/core/types';
 describe('Chain Reaction Engine', () => {
     describe('processMove', () => {
         it('should place 3 atoms on first turn', () => {
-            const grid = createGrid(4);
+        const grid = createGrid(4);
 
             const result = processMove(grid, 1, 1, 'B', true, DEFAULT_CONFIG);
 

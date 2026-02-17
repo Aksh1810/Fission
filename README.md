@@ -20,14 +20,14 @@ A production-grade chain reaction strategy game built with Next.js, React, and T
 
 ## ✨ Features
 
-| Feature | Description |
-|---------|-------------|
-| 🤖 **Single Player** | Challenge the Minimax AI with 3 difficulty levels |
-| 👥 **Two Players** | Local pass-and-play mode |
-| 💫 **Smooth Animations** | Framer Motion powered explosions and transitions |
-| 📱 **Responsive Design** | Works on desktop, tablet, and mobile |
-| 🌙 **Dark Theme** | Modern dark UI that's easy on the eyes |
-| 📊 **Analytics** | Built-in Vercel Analytics for traffic tracking |
+| Feature                  | Description                                       |
+|--------------------------|---------------------------------------------------|
+| 🤖 **Single Player**     | Challenge the Minimax AI with 3 difficulty levels |
+| 👥 **Two Players**       | Local pass-and-play mode                          |
+| 💫 **Smooth Animations** | Framer Motion powered explosions and transitions  |
+| 📱 **Responsive Design** | Works on desktop, tablet, and mobile              |
+| 🌙 **Dark Theme**        | Modern dark UI that's easy on the eyes            |
+| 📊 **Analytics**         | Built-in Vercel Analytics for traffic tracking    |
 
 ---
 
@@ -35,8 +35,7 @@ A production-grade chain reaction strategy game built with Next.js, React, and T
 
 The project follows a clean, layered architecture:
 
-```
-src/
+```src/
 ├── core/           # Pure game logic (zero React dependencies)
 │   ├── types.ts    # TypeScript type definitions
 │   ├── grid.ts     # Grid utilities
@@ -85,15 +84,15 @@ npm run dev
 
 ## 📜 Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run test` | Run tests in watch mode |
-| `npm run test:run` | Run tests once |
-| `npm run test:coverage` | Run tests with coverage |
-| `npm run lint` | Lint the codebase |
+| Command                 | Description               |
+|-------------------------|---------------------------|
+| `npm run dev`           | Start development server  |
+| `npm run build`         | Build for production      |
+| `npm run start`         | Start production server   |
+| `npm run test`          | Run tests in watch mode   |
+| `npm run test:run`      | Run tests once            |
+| `npm run test:coverage` | Run tests with coverage   |
+| `npm run lint`          | Lint the codebase         |
 
 ---
 
@@ -104,6 +103,7 @@ npm run test:run
 ```
 
 **Results:** 52 tests passing across 4 test suites:
+
 - Grid utilities (17 tests)
 - Chain reactions (8 tests)
 - Game rules (17 tests)
@@ -113,25 +113,25 @@ npm run test:run
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| [Next.js 16](https://nextjs.org/) | React framework with App Router |
-| [React 19](https://react.dev/) | UI library |
-| [TypeScript](https://www.typescriptlang.org/) | Type safety |
-| [Tailwind CSS](https://tailwindcss.com/) | Styling |
-| [Framer Motion](https://www.framer.com/motion/) | Animations |
-| [Vitest](https://vitest.dev/) | Unit testing |
-| [Vercel](https://vercel.com/) | Deployment & Analytics |
+| Technology                                       | Purpose                         |
+|--------------------------------------------------|---------------------------------|
+| [Next.js 16](https://nextjs.org/)                | React framework with App Router |
+| [React 19](https://react.dev/)                   | UI library                      |
+| [TypeScript](https://www.typescriptlang.org/)    | Type safety                     |
+| [Tailwind CSS](https://tailwindcss.com/)         | Styling                         |
+| [Framer Motion](https://www.framer.com/motion/)  | Animations                      |
+| [Vitest](https://vitest.dev/)                    | Unit testing                    |
+| [Vercel](https://vercel.com/)                    | Deployment & Analytics          |
 
 ---
 
 ## 🎮 AI Difficulty Levels
 
-| Level | Depth | Description |
-|-------|-------|-------------|
-| Easy | 2 moves | Casual play |
+| Level  | Depth   | Description        |
+|--------|---------|--------------------|
+| Easy   | 2 moves | Casual play        |
 | Medium | 4 moves | Balanced challenge |
-| Hard | 6 moves | Strategic gameplay |
+| Hard   | 6 moves | Strategic gameplay |
 
 The AI uses **Minimax with Alpha-Beta Pruning** for optimal move selection.
 
